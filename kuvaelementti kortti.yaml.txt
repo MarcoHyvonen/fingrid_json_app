@@ -1,0 +1,52 @@
+type: picture-elements
+elements:
+  - type: state-label
+    entity: sensor.f3
+    style:
+      top: 68%
+      left: 10%
+      background: grey
+      color: white
+      transform: scale(1,1)
+  - type: state-label
+    entity: sensor.f4
+    style:
+      top: 84%
+      left: 0%
+      background: grey
+      color: white
+      transform: scale(1,1)
+  - type: state-label
+    entity: sensor.f6
+    style:
+      top: 91%
+      left: 50%
+      background: grey
+      color: white
+      transform: scale(1,1)
+  - type: state-label
+    entity: sensor.f11
+    style:
+      top: 0%
+      left: 60%
+      background: grey
+      color: white
+      transform: scale(1,1)
+  - type: state-label
+    entity: sensor.f2
+    style:
+      top: 32%
+      left: 20%
+      background: grey
+      color: white
+      transform: scale(1,1)
+  - type: state-label
+    entity: sensor.f18
+    style:
+      top: 80%
+      left: 75%
+      background: grey
+      color: white
+      transform: scale(1,1)
+image: >
+  https://cdn.fmi.fi/weather-observations/products/finland/frontpage_wx_obs-normal-latest.png?timestamp=0

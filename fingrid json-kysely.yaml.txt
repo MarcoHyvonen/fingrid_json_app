@@ -1,0 +1,309 @@
+# Fingrid application/json-kysely => configuration.yaml
+  # Tarvitset oman api-keyn lue ohjeet: https://data.fingrid.fi/fi/pages/api käytä saamaasi api-keytä kohdassa x-api-key: !secret fingrid_api_key
+  # Tässä käytettävät reaaliaikaiset (päivittyvät Fingridillä 3 minuutin välein) tietoaineistot löytyvät: https://data.fingrid.fi/fi/organization/fingrid
+  # Huom! Tuotantomuodoista ei vielä löydy Fingridin rajapinnasta reaaliaikaista Aurinkovoiman tuotantoa, tämä puuttuu tästä johdosta.
+
+rest:
+  - resource: https://api.fingrid.fi/v1/variable/event/json/192%2C193%2C194%2C209%2C58%2C185%2C178%2C196%2C182%2C191%2C202%2C188%2C201%2C189%2C205%2C181%2C89%2C90%2C194%2C180%2C195%2C187%2C87%2C183
+    headers:
+      Accept: application/json
+      x-api-key: !secret fingrid_api_key
+    scan_interval: 600
+
+    sensor:
+      - name: "Rajasiirto Pohjois-Ruotsi"
+        unique_id: fingrid_2
+        icon: mdi:transmission-tower
+        value_template: >-
+          {% set value_json = value_json | sort(attribute='variable_id') %}
+          {% if value_json[1].value < 0 %}
+          Tuonti {{ value_json[1].value | round(0) }} MW →
+          {% else %}
+          ← Vienti {{ value_json[1].value | round(0) }} MW
+          {% endif %}
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Rajasiirto Keski-Ruotsi"
+        unique_id: "fingrid_3"
+        icon: mdi:mdiTransmissionTowerImport
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %}
+          {% if value_json[2].value < 0 %}
+          Tuonti {{ value_json[2].value | round(0) }} MW →
+          {% else %}
+          ← Vienti {{ value_json[2].value | round(0) }} MW
+          {% endif %}
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Rajasiirto Ahvenanmaa"
+        unique_id: "fingrid_4"
+        icon: mdi:mdiTransmissionTowerImport
+        value_template: >-
+          {% set value_json = value_json | sort(attribute='variable_id') %}
+          {% if value_json[3].value < 0 %}
+          Tuonti {{ value_json[3].value | round(0) }} MW → 
+          {% else %}
+          ← Vienti {{ value_json[3].value | round(0) }} MW
+          {% endif %}
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Helsinki"
+        unique_id: "fingrid_5"
+        icon: mdi:temperature-celsius
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %}
+          {{ value_json[4].value | round(1) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+          
+      - name: "Rajasiirto Viroon"
+        unique_id: "fingrid_6"
+        icon: mdi:transmission-tower
+        value_template: >-
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {% if value_json[5].value < 0 %}
+          ↑ Tuonti {{ value_json[5].value | round(0) }} MW
+          {% else %}
+          ↓ Vienti {{ value_json[5].value | round(0) }} MW
+          {% endif %}
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Tuulivoima tuotanto"
+        unique_id: "fingrid_7"
+        icon: mdi:transmission-tower
+        value_template: >-
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[6].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Jyväskylä"
+        unique_id: "fingrid_8"
+        icon: mdi:temperature-celsius
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[7].value | round(1) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Tehoreservi"
+        unique_id: "fingrid_9"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[8].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Rovaniemi"
+        unique_id: "fingrid_10"
+        icon: mdi:temperature-celsius
+        value_template: >-
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[9].value | round(1)  }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Rajasiirto Norja"
+        unique_id: "fingrid_11"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {% if value_json[10].value < 0 %}
+          Tuonti {{ value_json[10].value | round(0) }} MW ↓
+          {% else %}
+          ↑  Vienti {{ value_json[10].value | round(0) }} MW
+          {% endif %}
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Ydinvoima"
+        unique_id: "fingrid_12"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[11].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Lauhdevoimatuonta"
+        unique_id: "fingrid_13"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[12].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Vesivoima"
+        unique_id: "fingrid_14"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[13].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+          
+      - name: "Tuotanto Suomessa"
+        unique_id: "fingrid_15"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[14].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+          
+      - name: "Kulutus Suomessa"
+        unique_id: "fingrid_16"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[15].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Tuonti- / vienti+ (netto)"
+        unique_id: "fingrid_17"
+        icon: mdi:transmission-tower
+        value_template: >-
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[16].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+          
+      - name: "Rajasiirto Venäjä"
+        unique_id: "fingrid_18"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {% if value_json[17].value < 0 %}
+          ← Tuonti {{ value_json[17].value | round(0) }} MW 
+          {% else %}
+          Vienti {{ value_json[17].value | round(0) }} MW →
+          {% endif %} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+          
+      - name: "Oulu"
+        unique_id: "fingrid_19"
+        icon: mdi:temperature-celsius
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[18].value | round(1) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Yhteistuotanto (kaukolämpö)"
+        unique_id: "fingrid_20"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[19].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Yhteistuotanto (teollisuus)"
+        unique_id: "fingrid_21"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[20].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+      - name: "Muu tuotanto"
+        unique_id: "fingrid_22"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %} 
+          {{ value_json[21].value | round(0) }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
+# Tässä mapper perustuu Perttu Pöyhtärin koodiin: https://github.com/iivana/home-assistant-fingrid-api/blob/main/fingrid-power-system-state.yaml
+      - name: "Voimajärjestelmän käyttötilanne"
+        unique_id: "fingrid_23"
+        icon: mdi:transmission-tower
+        value_template: >- 
+          {% set value_json = value_json | sort(attribute='variable_id') %}
+          {% set mapper =  {
+            1 : 'Normaali',
+            2 : 'Heikentynyt',
+            3 : 'Vaarassa',
+            4 : 'Vakava häiriö',
+            5 : 'Vakava häiriö (palautus)' } %}
+          {% set state =  value_json[22].value %}
+          {{ mapper[state] if state in mapper else 'Ei tiedossa' }} 
+        json_attributes:
+          - "value"
+          - "variable_id"
+          - "start_time"
+          - "end_time"
+
