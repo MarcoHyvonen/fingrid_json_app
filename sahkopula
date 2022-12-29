@@ -25,8 +25,3 @@ rest:
           - "value"
           - "start_time"
           - "end_time"
-  - resource: https://api.fingrid.fi/v1/variable/event/json/192%2C193%2C194%2C209%2C58%2C185%2C178%2C196%2C182%2C191%2C202%2C188%2C201%2C189%2C205%2C181%2C89%2C90%2C194%2C180%2C195%2C187%2C87%2C183
-    headers:
-      Accept: application/json
-      x-api-key: !secret fingrid_api_key
-    scan_interval: 180
