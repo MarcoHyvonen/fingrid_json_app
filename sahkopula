@@ -1,0 +1,32 @@
+# Fingrid application/json-kysely => configuration.yaml
+  # Tarvitset oman api-keyn lue ohjeet: https://data.fingrid.fi/fi/pages/api käytä saamaasi api-keytä kohdassa x-api-key: !secret fingrid_api_key
+  # Tässä käytettävät reaaliaikaiset (päivittyvät Fingridillä 3 minuutin välein) tietoaineistot löytyvät: https://data.fingrid.fi/fi/organization/fingrid
+  # Perustuu Perttu Pöyhtärin koodiin: https://github.com/iivana/home-assistant-fingrid-api/blob/main/fingrid-power-system-state.yaml
+
+rest:
+  - resource: https://api.fingrid.fi/v1/variable/336/event/json
+    headers:
+      Accept: application/json
+      x-api-key: !secret fingrid_api_key
+    scan_interval: 180
+    sensor: # variable id: 336, https://data.fingrid.fi/fi/dataset/sahkopulan-tilannetieto-reaaliaikatieto
+      - name: "Sähköpulan tilannetieto"
+        unique_id: "fingrid_api_336_sahkopula"
+        icon: mdi:transmission-tower
+        value_template: >-
+          {% set mapper =  {
+            0 : 'Normaali käyttötilanne',
+            1 : 'Sähköpula mahdollinen',
+            2 : 'Sähköpulan riski suuri',
+            3 : 'Sähköpula' } %}
+          {% set state =  value_json.value %}
+          {{ mapper[state] if state in mapper else 'Unknown' }}
+        json_attributes:
+          - "value"
+          - "start_time"
+          - "end_time"
+  - resource: https://api.fingrid.fi/v1/variable/event/json/192%2C193%2C194%2C209%2C58%2C185%2C178%2C196%2C182%2C191%2C202%2C188%2C201%2C189%2C205%2C181%2C89%2C90%2C194%2C180%2C195%2C187%2C87%2C183
+    headers:
+      Accept: application/json
+      x-api-key: !secret fingrid_api_key
+    scan_interval: 180
